@@ -16,7 +16,7 @@ python = ">=3.12"
 project = "labyrinth_game.main:main"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.14.0"
+ruff = "^0.14.5"
 
 [build-system]
 requires = ["poetry-core"]
