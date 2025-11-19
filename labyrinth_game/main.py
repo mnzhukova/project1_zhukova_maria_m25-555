@@ -2,7 +2,7 @@
 
 #Модуль main — точка входа в игру.
 
-from .player_actions import get_input, move_player, show_inventory, take_item
+from .player_actions import get_input, move_player, show_inventory, take_item, use_item
 from .utils import describe_current_room
 
 
@@ -21,7 +21,7 @@ def process_command(game_state, command):
 
     if not parts:
         print('Не время для шалостей — лабиринт ждёт слова.' 
-              ' solvВведи команду. Для подсказки — help.')
+              ' Введи команду. Для подсказки — help.')
         return
     
     action = parts[0] #команда
@@ -31,7 +31,10 @@ def process_command(game_state, command):
         case 'look':
             describe_current_room(game_state)
         case 'use':
-            pass
+            if arg:
+                use_item(game_state, item_name=arg)
+            else:
+                print('Я что экстрасенс? Напиши, что именно ты хочешь использовать')
         case 'go':
             if arg:
                 move_player(game_state, direction=arg)

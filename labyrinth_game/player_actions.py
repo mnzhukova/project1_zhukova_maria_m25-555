@@ -24,7 +24,7 @@ def get_input(prompt='> '):
     Запрашивает ввод у пользователя с заданным приглашением (prompt).
     
     Args:
-        prompt (str): Текст-приглашение для ввода (по умолчанию: '> ').
+        prompt(str): Текст-приглашение для ввода (по умолчанию: '> ').
     
     Returns:
         str: Введённая пользователем строка (в нижнем регистре), либо 'quit' 
@@ -51,7 +51,9 @@ def move_player(game_state, direction):
     При отсутствии выхода выводит сообщение об ошибке.
 
     Args:
-        game_state(dict): Словарь с состоянием игры.
+        game_state(dict): Словарь с состоянием игры
+        direction(str): Направление движения (например, 'north', 'south').
+            Должно соответствовать ключу в словаре 'exits' текущей комнаты.
 
     Returns:
         None: Функция не возвращает значение. Изменяет game_state и производит
@@ -68,6 +70,24 @@ def move_player(game_state, direction):
         print('Нельзя пойти в этом направлении.')
 
 def take_item(game_state, item_name):
+    '''
+    Позволяет игроку взять предмет из текущей комнаты и добавить его в инвентарь.
+
+    Функция проверяет наличие указанного предмета в текущей комнате. Если предмет 
+    найден:
+    - добавляет его в инвентарь игрока (game_state['player_inventory']);
+    - удаляет его из списка предметов комнаты (ROOMS[current_room]['items']);
+    - выводит сообщение об успешном взятии.
+    Если предмет не найден — выводит сообщение об отсутствии предмета.
+
+    Args:
+        game_state(dict): Словарь с состоянием игры.
+        item_name (str): Название предмета, который игрок пытается взять.
+
+    Returns:
+        None: Функция не возвращает значение. Изменяет game_state и ROOMS,
+            а также производит вывод в консоль.
+    '''
     current_room = game_state['current_room']
 
     if item_name in ROOMS[current_room]['items']:
@@ -76,3 +96,25 @@ def take_item(game_state, item_name):
        print(f'Вы подняли: {item_name}')
     else:
         print('Такого предмета здесь нет.')
+
+def use_item(game_state, item_name):
+
+    if item_name not in game_state['player_inventory']:
+        print('У вас нет такого предмета.')
+    else:
+        match item_name:
+            case 'torch':
+                print('Стало светлее. Не знаю даже, поможет ли тебе это.')
+            case 'sword':
+                print('Ух! У тебя прибавилось уверенности. '
+                      'Можешь позвонить начальнику и запросить зп повыше')
+            case 'bronze_box':
+                print('Шалость удалась! Ты открыл шкатулку')
+                if 'rusty_key' in game_state['player_inventory']:
+                    print('Ха-ха-ха! А в шкатулке только мой смех и презрение!')
+                else: 
+                    game_state['player_inventory'].append('rusty_key')
+                    print('Проверь инвентарь! Дарю сейчас, но это тебе на Новый год!')
+            case _:
+                print('Ты не знаешь, как использовать этот предмет. '
+                      'Вырастишь - поймешь!')
