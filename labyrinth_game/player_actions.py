@@ -43,7 +43,7 @@ def move_player(game_state, direction):
 
     Функция проверяет наличие допустимого выхода из текущей комнаты 
     в заданном направлении.
-    
+
     При успешном перемещении:
     - обновляет текущую комнату в состоянии игры;
     - увеличивает счётчик пройденных шагов;
@@ -68,4 +68,11 @@ def move_player(game_state, direction):
         print('Нельзя пойти в этом направлении.')
 
 def take_item(game_state, item_name):
-    pass
+    current_room = game_state['current_room']
+
+    if item_name in ROOMS[current_room]['items']:
+       game_state['player_inventory'].append(item_name)
+       ROOMS[current_room]['items'].remove(item_name)
+       print(f'Вы подняли: {item_name}')
+    else:
+        print('Такого предмета здесь нет.')

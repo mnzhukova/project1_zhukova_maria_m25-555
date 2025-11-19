@@ -2,7 +2,7 @@
 
 #Модуль main — точка входа в игру.
 
-from .player_actions import get_input, move_player, show_inventory
+from .player_actions import get_input, move_player, show_inventory, take_item
 from .utils import describe_current_room
 
 
@@ -40,7 +40,10 @@ def process_command(game_state, command):
                       'Но ты останешься на месте, если не задать одно из направлений:' 
                       ' north, south, west, east')
         case 'take':
-            pass
+            if arg:
+                take_item(game_state, item_name=arg)
+            else:
+                print('Соберись! Укажи конкретно, что ты хочешь взять!')
         case 'inventory':
             show_inventory(game_state)
         case 'help':
