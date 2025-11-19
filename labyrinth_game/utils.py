@@ -28,18 +28,19 @@ def describe_current_room(game_state):
     print(f'=={current_room.upper()}==')
     
     #Описание комнаты
-    print(f'{room_data['description']}')
+    print(f'{room_data['description']}\n')
 
     #Видимые предметы (если есть)
     if room_data.get('items'):
         items_str = ', '.join(room_data['items'])
-        print(f'Заметные предметы: {items_str}')
+        print(f'Заметные предметы: {items_str}\n')
 
     #Доступные выходы (если есть)
     if room_data.get('exits'):
         exits_str = ', '.join(room_data['exits'].keys())
-        print(f'Выходы: {exits_str}')
+        print(f'Выходы: {exits_str}\n')
 
     #Уведомление о наличии загадки (если есть)
     if room_data.get('puzzle'):
-        print('Кажется, здесь есть загадка (используйте команду solve).')
+        print('Кажется, здесь есть загадка (используйте команду solve).\n')
+    
