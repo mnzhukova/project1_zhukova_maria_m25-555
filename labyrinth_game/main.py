@@ -3,6 +3,7 @@
 Модуль main — точка входа в игру.
 """
 from .constants import ROOMS
+from .utils import describe_current_room
 
 ROOMS
 
@@ -12,7 +13,7 @@ def main():
 
 game_state = {
         'player_inventory': [], # Инвентарь игрока
-        'current_room': 'entrance', # Текущая комната
+        'current_room': 'hall', # Текущая комната
         'game_over': False, # Значения окончания игры
         'steps_taken': 0 # Количество шагов
 }

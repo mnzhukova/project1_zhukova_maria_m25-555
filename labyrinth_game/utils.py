@@ -1,3 +1,45 @@
-"""
-Модуль utils - вспомогательные функции
-"""
+# Модуль utils - вспомогательные функции
+from .constants import ROOMS
+
+
+def describe_current_room(game_state):
+    '''
+    Описывает текущую комнату: выводит название, описание, список видимых предметов,
+    доступные выходы и уведомление о наличии загадки.
+
+    Args:
+    game_state(dict): Словарь с состоянием игры.
+
+    Returns:
+        None: Функция выводит информацию в консоль, не возвращая значения.
+
+    ROOMS = { 
+   'название комнаты': { 
+        'description': 'Описание комнаты',  
+        'exists': {'направление': 'название комнаты, куда ведет выход'},
+        'items': ['Список предметов, которые находятся в комнате'],
+        'puzzle': Кортеж из двух элементов (вопрос, ответ) или None, если загадки нет
+ }
+    '''
+    current_room = game_state['current_room']
+    room_data = ROOMS[current_room]
+
+    #Название текущей комнаты 
+    print(f'=={current_room.upper()}==')
+    
+    #Описание комнаты
+    print(f'{room_data['description']}')
+
+    #Видимые предметы (если есть)
+    if room_data.get('items'):
+        items_str = ', '.join(room_data['items'])
+        print(f'Заметные предметы: {items_str}')
+
+    #Доступные выходы (если есть)
+    if room_data.get('exits'):
+        exits_str = ', '.join(room_data['exits'].keys())
+        print(f'Выходы:{exits_str}')
+
+    #Уведомление о наличии загадки (если есть)
+    if room_data.get('puzzle'):
+        print('Кажется, здесь есть загадка (используйте команду solve).')
