@@ -38,7 +38,7 @@ def describe_current_room(game_state):
     #Доступные выходы (если есть)
     if room_data.get('exits'):
         exits_str = ', '.join(room_data['exits'].keys())
-        print(f'Выходы:{exits_str}')
+        print(f'Выходы: {exits_str}')
 
     #Уведомление о наличии загадки (если есть)
     if room_data.get('puzzle'):
