@@ -3,7 +3,7 @@
 #Модуль main — точка входа в игру.
 
 from .player_actions import get_input, move_player, show_inventory, take_item, use_item
-from .utils import describe_current_room, solve_puzzle
+from .utils import attempt_open_treasure, describe_current_room, solve_puzzle
 
 
 def main():
@@ -52,7 +52,10 @@ def process_command(game_state, command):
                 print('Соберись! Укажи конкретно, что ты хочешь взять!')
 
         case 'solve':
-            solve_puzzle(game_state)
+            if game_state['current_room'] != 'treasure_room':
+                solve_puzzle(game_state)
+            else:
+                attempt_open_treasure(game_state)
 
         case 'inventory':
             show_inventory(game_state)

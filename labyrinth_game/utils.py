@@ -62,13 +62,12 @@ def solve_puzzle(game_state):
     # Проверяем наличие загадки в комнате
     if not room_puzzle:
         print('Загадок здесь нет.')
-        return True
         
     # Вывод загадки
     print(room_puzzle[0])
 
     # Запрос ответа от пользователя
-    print(f'Ваш ответ: ')
+    print('Ваш ответ: ')
     user_answer = input().strip().lower()
 
     # Проверяем правильность ответа
@@ -85,5 +84,37 @@ def solve_puzzle(game_state):
         print('Неверно. Попробуйте снова.')
         return False
 
+def successful_open_treasure(game_state):
+    # Удаляем 'treasure_chest' из комнаты
+    current_room = game_state['current_room']
+    ROOMS[current_room]['items'].remove('treasure_chest')
+    
+    # Сообщение о победе
+    print('В сундуке сокровище! Вы победили!')
+    game_state['game_over'] = True
 
+def attempt_open_treasure(game_state):
 
+    # Проверяем есть ли у игрока 'treasure_key'
+    if 'treasure_key' in game_state['player_inventory']:
+        print('Вы применяете ключ, и замок щёлкает. Сундук открыт!')
+        successful_open_treasure(game_state)
+
+    # Если 'treasure_key' нет, то сценарий с загадкой
+    else:
+        print("Сундук заперт. ... Ввести код? (да/нет)")
+        user_answer = input('>').lower()
+
+        # если пользователь ввел что-то иное от да/нет.
+        while user_answer not in ('да', 'нет'):
+            print('Просто да или нет! Это не сложно!')
+            user_answer = input('>').lower()
+
+        # Обработка ответов да/нет
+        if user_answer == 'да':
+            if solve_puzzle(game_state):
+                successful_open_treasure(game_state)
+        elif user_answer == 'нет':
+            print('Вы отступаете от сундука.')
+
+    return True

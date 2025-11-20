@@ -93,12 +93,16 @@ def take_item(game_state, item_name):
 
     # Проверяем наличие предмета в комнате
     if item_name in room_items:
-        # Добавляем в инвентарь
-       game_state['player_inventory'].append(item_name)
-       # Удаляем из комнаты
-       room_items.remove(item_name)
-       print(f'Вы подняли: {item_name}')
-       return True
+        # Добавляем в инвентарь, если это не treasure_chest
+        if item_name != 'treasure_chest': 
+            game_state['player_inventory'].append(item_name)
+            # Удаляем из комнаты
+            room_items.remove(item_name)
+            print(f'Вы подняли: {item_name}')
+            return True
+        else:
+            print('Вы не можете поднять сундук, он слишком тяжелый.')
+            return False
     else:
         print('Такого предмета здесь нет.')
         return False
@@ -134,5 +138,5 @@ def use_item(game_state, item_name):
                 'Ты не знаешь, как использовать этот предмет. '
                 'Вырастешь - поймешь!'
             )
-            
+
     return True
