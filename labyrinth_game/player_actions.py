@@ -60,10 +60,10 @@ def move_player(game_state, direction):
             вывод в консоль.
     '''
     current_room = game_state['current_room']
-    current_exits = ROOMS[current_room].get('exits')
+    room_exits = ROOMS[current_room].get('exits')
 
-    if direction in current_exits:
-        game_state['current_room'] = current_exits[direction]
+    if direction in room_exits:
+        game_state['current_room'] = room_exits[direction]
         game_state['steps_taken'] += 1
         describe_current_room(game_state)
     else:
@@ -85,36 +85,54 @@ def take_item(game_state, item_name):
         item_name (str): Название предмета, который игрок пытается взять.
 
     Returns:
-        None: Функция не возвращает значение. Изменяет game_state и ROOMS,
-            а также производит вывод в консоль.
+        bool: True — если предмет успешно взят;
+               False — если предмета в комнате нет.
     '''
     current_room = game_state['current_room']
+    room_items = ROOMS[current_room]['items']
 
-    if item_name in ROOMS[current_room]['items']:
+    # Проверяем наличие предмета в комнате
+    if item_name in room_items:
+        # Добавляем в инвентарь
        game_state['player_inventory'].append(item_name)
-       ROOMS[current_room]['items'].remove(item_name)
+       # Удаляем из комнаты
+       room_items.remove(item_name)
        print(f'Вы подняли: {item_name}')
+       return True
     else:
         print('Такого предмета здесь нет.')
+        return False
 
 def use_item(game_state, item_name):
 
+    # Проверяем, есть ли предмет в инвентаре
     if item_name not in game_state['player_inventory']:
         print('У вас нет такого предмета.')
-    else:
-        match item_name:
-            case 'torch':
-                print('Стало светлее. Не знаю даже, поможет ли тебе это.')
-            case 'sword':
-                print('Ух! У тебя прибавилось уверенности. '
-                      'Можешь позвонить начальнику и запросить зп повыше')
-            case 'bronze_box':
-                print('Шалость удалась! Ты открыл шкатулку')
-                if 'rusty_key' in game_state['player_inventory']:
-                    print('Ха-ха-ха! А в шкатулке только мой смех и презрение!')
-                else: 
-                    game_state['player_inventory'].append('rusty_key')
-                    print('Проверь инвентарь! Дарю сейчас, но это тебе на Новый год!')
-            case _:
-                print('Ты не знаешь, как использовать этот предмет. '
-                      'Вырастишь - поймешь!')
+        return False
+    
+    # Обрабатываем использование конкретных предметов
+    match item_name:
+        case 'torch':
+            print('Стало светлее. Не знаю даже, поможет ли тебе это.')
+
+        case 'sword':
+            print(
+                'Ух! У тебя прибавилось уверенности. '
+                'Можешь позвонить начальнику и запросить зп повыше'
+            )
+
+        case 'bronze_box':
+            print('Шалость удалась! Ты открыл шкатулку')
+            if 'rusty_key' in game_state['player_inventory']:
+                print('Ха-ха-ха! А в шкатулке только мой смех и презрение!')
+            else: 
+                game_state['player_inventory'].append('rusty_key')
+                print('Проверь инвентарь! Дарю сейчас, но это тебе на Новый год!')
+        
+        case _:
+            print(
+                'Ты не знаешь, как использовать этот предмет. '
+                'Вырастешь - поймешь!'
+            )
+            
+    return True

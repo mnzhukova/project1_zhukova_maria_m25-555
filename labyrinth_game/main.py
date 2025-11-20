@@ -3,7 +3,7 @@
 #Модуль main — точка входа в игру.
 
 from .player_actions import get_input, move_player, show_inventory, take_item, use_item
-from .utils import describe_current_room
+from .utils import describe_current_room, solve_puzzle
 
 
 def main():
@@ -30,11 +30,13 @@ def process_command(game_state, command):
     match action:
         case 'look':
             describe_current_room(game_state)
+
         case 'use':
             if arg:
                 use_item(game_state, item_name=arg)
             else:
                 print('Я что экстрасенс? Напиши, что именно ты хочешь использовать')
+
         case 'go':
             if arg:
                 move_player(game_state, direction=arg)
@@ -42,13 +44,19 @@ def process_command(game_state, command):
                 print('Если хочешь идти - иди! ' 
                       'Но ты останешься на месте, если не задать одно из направлений:' 
                       ' north, south, west, east')
+                
         case 'take':
             if arg:
                 take_item(game_state, item_name=arg)
             else:
                 print('Соберись! Укажи конкретно, что ты хочешь взять!')
+
+        case 'solve':
+            solve_puzzle(game_state)
+
         case 'inventory':
             show_inventory(game_state)
+
         case 'help':
             print('Список существующих команд:\n'
                     'look — осмотреть комнату\n'
@@ -57,10 +65,12 @@ def process_command(game_state, command):
                     'solve — решить загадку\n'
                     'quit/exit — выйти из игры'
             )
+
         case 'quit' | 'exit':
             game_state['game_over'] = True
-            print('Уже уходишь? В следующий раз выпей элексир смелости,' 
+            print('Уже уходишь? В следующий раз выпей элексир смелости, ' 
                   'прежде чем начать игру!')
+            
         case _:
             print('Эхо лабиринта не узнаёт этого слова. Попроси помощи '
                   '— введи help.')

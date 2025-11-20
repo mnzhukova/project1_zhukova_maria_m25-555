@@ -44,3 +44,46 @@ def describe_current_room(game_state):
     if room_data.get('puzzle'):
         print('Кажется, здесь есть загадка (используйте команду solve).\n')
     
+def solve_puzzle(game_state):
+    '''
+    Позволяет игроку решить загадку в текущей комнате.
+
+    Args:
+        game_state (dict): Словарь с состоянием игры.
+
+    Returns:
+        bool:
+            - True: если загадка решена или её не было в комнате.
+            - False: если ответ неверный.
+    '''
+    current_room = game_state['current_room']
+    room_puzzle = ROOMS[current_room].get('puzzle') 
+
+    # Проверяем наличие загадки в комнате
+    if not room_puzzle:
+        print('Загадок здесь нет.')
+        return True
+        
+    # Вывод загадки
+    print(room_puzzle[0])
+
+    # Запрос ответа от пользователя
+    print(f'Ваш ответ: ')
+    user_answer = input().strip().lower()
+
+    # Проверяем правильность ответа
+    if user_answer == room_puzzle[1]:
+        print('Успех! Получай медальку')
+        # добавляем награду в инвентарь
+        game_state['player_inventory'].append('medal')
+
+        # Убираем загадку из комнаты
+        del ROOMS[current_room]['puzzle']
+        
+        return True
+    else:
+        print('Неверно. Попробуйте снова.')
+        return False
+
+
+
