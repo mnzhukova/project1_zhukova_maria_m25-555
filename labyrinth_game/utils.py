@@ -43,7 +43,17 @@ def describe_current_room(game_state):
     #Уведомление о наличии загадки (если есть)
     if room_data.get('puzzle'):
         print('Кажется, здесь есть загадка (используйте команду solve).\n')
-    
+
+def happy_end(game_state):
+    current_room = game_state['current_room']
+    # Удаляем 'treasure_chest' из комнаты
+    ROOMS[current_room]['items'].remove('treasure_chest')
+    # Сообщение о победе
+    print('В сундуке сокровище! Вы победили!')
+    # Завершение игры
+    game_state['game_over'] = True 
+
+
 def solve_puzzle(game_state):
     '''
     Позволяет игроку решить загадку в текущей комнате.
@@ -68,38 +78,64 @@ def solve_puzzle(game_state):
 
     # Запрос ответа от пользователя
     print('Ваш ответ: ')
-    user_answer = input().strip().lower()
+    user_answer = input('>').strip().lower()
 
-    # Проверяем правильность ответа
+    # Если ответ неверный, даем пользователю вводить ответы
+    while user_answer != room_puzzle[1]:
+        if user_answer == 'exit':
+            print('Возможно, получится в следующий раз')
+            break
+        print('Неверно. Попробуйте снова.\n' 
+              'Введи exit для выхода из режима решения загадки'
+        )
+        user_answer = input('>').strip().lower()
+        
+    # Если ответ верный
     if user_answer == room_puzzle[1]:
-        print('Успех! Получай медальку')
-        # добавляем награду в инвентарь
-        game_state['player_inventory'].append('medal')
+        # В зависимости от комнаты выдаем награду
+        match current_room:
+            case 'hall':
+                print('10 очков Гриффиндору! А тебе похвала и слава!')
+
+            case 'trap_room':
+                print('Молодец! Возьми с полки пирожок.\n\n'
+                      'В твой инвентарь добавлен cherry_pie'
+                )
+                # добавляем награду в инвентарь
+                game_state['player_inventory'].append('cherry pie')
+
+            case 'library':
+                print('Вот это поворот! Верно! В этот раз тебе даю действительно '
+                      'чего-то стоящую вещь в этой игре\n\n'
+                      'В твой инвентарь добавлен treasure_key'
+                )
+                # добавляем награду в инвентарь
+                game_state['player_inventory'].append('treasure_key')
+
+            case 'treasure_room':
+                happy_end(game_state)
+
+            case 'lavatory':
+                print('Повезло! Пользуйся - не благодари!'
+                      'В твой инвентарь добавлена toilet_paper'
+                )
+                # добавляем награду в инвентарь
+                game_state['player_inventory'].append('toilet_paper')
+
+            case _:
+                print('Решение верное! Забыл придумать для тебя награду')
 
         # Убираем загадку из комнаты
         del ROOMS[current_room]['puzzle']
         
         return True
-    else:
-        print('Неверно. Попробуйте снова.')
-        return False
-
-def successful_open_treasure(game_state):
-    # Удаляем 'treasure_chest' из комнаты
-    current_room = game_state['current_room']
-    ROOMS[current_room]['items'].remove('treasure_chest')
-    
-    # Сообщение о победе
-    print('В сундуке сокровище! Вы победили!')
-    game_state['game_over'] = True
 
 def attempt_open_treasure(game_state):
 
     # Проверяем есть ли у игрока 'treasure_key'
     if 'treasure_key' in game_state['player_inventory']:
         print('Вы применяете ключ, и замок щёлкает. Сундук открыт!')
-        successful_open_treasure(game_state)
-
+        happy_end(game_state)
     # Если 'treasure_key' нет, то сценарий с загадкой
     else:
         print("Сундук заперт. ... Ввести код? (да/нет)")
@@ -112,9 +148,19 @@ def attempt_open_treasure(game_state):
 
         # Обработка ответов да/нет
         if user_answer == 'да':
-            if solve_puzzle(game_state):
-                successful_open_treasure(game_state)
+            solve_puzzle(game_state)
         elif user_answer == 'нет':
             print('Вы отступаете от сундука.')
 
     return True
+
+def show_help():
+    print("\nДоступные команды:")
+    print("  go <direction>  - перейти в направлении (north/south/east/west)")
+    print("  look            - осмотреть текущую комнату")
+    print("  take <item>     - поднять предмет")
+    print("  use <item>      - использовать предмет из инвентаря")
+    print("  inventory       - показать инвентарь")
+    print("  solve           - попытаться решить загадку в комнате")
+    print("  quit            - выйти из игры")
+    print("  help            - показать это сообщение")     

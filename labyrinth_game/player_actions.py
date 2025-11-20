@@ -117,7 +117,9 @@ def use_item(game_state, item_name):
     # Обрабатываем использование конкретных предметов
     match item_name:
         case 'torch':
-            print('Стало светлее. Не знаю даже, поможет ли тебе это.')
+            print(
+                'Стало светлее. Не знаю даже, поможет ли тебе это.'
+            )
 
         case 'sword':
             print(
@@ -126,13 +128,22 @@ def use_item(game_state, item_name):
             )
 
         case 'bronze_box':
-            print('Шалость удалась! Ты открыл шкатулку')
+            print(
+                'Шалость удалась! Ты открыл шкатулку'
+            )
             if 'rusty_key' in game_state['player_inventory']:
                 print('Ха-ха-ха! А в шкатулке только мой смех и презрение!')
             else: 
                 game_state['player_inventory'].append('rusty_key')
-                print('Проверь инвентарь! Дарю сейчас, но это тебе на Новый год!')
+                print(
+                    'Проверь инвентарь! Дарю сейчас, но это тебе на Новый год!'
+                )
         
+        case 'toilet_paper':
+            print(
+                'Clean!'
+            )
+
         case _:
             print(
                 'Ты не знаешь, как использовать этот предмет. '

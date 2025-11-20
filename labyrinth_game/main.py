@@ -3,7 +3,7 @@
 #Модуль main — точка входа в игру.
 
 from .player_actions import get_input, move_player, show_inventory, take_item, use_item
-from .utils import attempt_open_treasure, describe_current_room, solve_puzzle
+from .utils import attempt_open_treasure, describe_current_room, show_help, solve_puzzle
 
 
 def main():
@@ -61,13 +61,7 @@ def process_command(game_state, command):
             show_inventory(game_state)
 
         case 'help':
-            print('Список существующих команд:\n'
-                    'look — осмотреть комнату\n'
-                    'inventory — показать инвентарь\n'
-                    'go <направление> — пойти в указанном направлении\n'
-                    'solve — решить загадку\n'
-                    'quit/exit — выйти из игры'
-            )
+            show_help()
 
         case 'quit' | 'exit':
             game_state['game_over'] = True
