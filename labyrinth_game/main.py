@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #Модуль main — точка входа в игру.
-
+from .constants import COMMANDS
 from .player_actions import get_input, move_player, show_inventory, take_item, use_item
 from .utils import attempt_open_treasure, describe_current_room, show_help, solve_puzzle
 
@@ -27,6 +27,9 @@ def process_command(game_state, command):
     action = parts[0] #команда
     arg = parts[1] if len(parts) > 1 else None #аргумент (с проверкой на существование)
 
+    directions = {'north', 'south', 'east', 'west'}
+    is_directions = action in directions
+
     match action:
         case 'look':
             describe_current_room(game_state)
@@ -44,7 +47,10 @@ def process_command(game_state, command):
                 print('Если хочешь идти - иди! ' 
                       'Но ты останешься на месте, если не задать одно из направлений:' 
                       ' north, south, west, east')
-                
+
+        case cmd if is_directions:
+                move_player(game_state, direction=cmd)
+
         case 'take':
             if arg:
                 take_item(game_state, item_name=arg)
@@ -61,7 +67,7 @@ def process_command(game_state, command):
             show_inventory(game_state)
 
         case 'help':
-            show_help()
+            show_help(COMMANDS)
 
         case 'quit' | 'exit':
             game_state['game_over'] = True
