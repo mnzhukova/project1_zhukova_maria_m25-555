@@ -1,7 +1,11 @@
 # Модуль utils - вспомогательные функции
 import math
 
-from .constants import ROOMS, VALID_ANSWERS
+from .constants import (MODULO_DAMAGE, 
+                        MODULO_EVENT, 
+                        MODULO_EVENT_TYPE, 
+                        ROOMS, 
+                        VALID_ANSWERS)
 
 
 def describe_current_room(game_state):
@@ -160,9 +164,9 @@ def attempt_open_treasure(game_state):
 
     return True
 
-def show_help(COMMANDS):
+def show_help(commands):
     print("\nДоступные команды:")
-    for command, description in COMMANDS.items():
+    for command, description in commands.items():
         print(f'{command:<16}-{description}')
 
 def pseudo_random(seed: int, modulo: int) -> int:
@@ -185,7 +189,7 @@ def pseudo_random(seed: int, modulo: int) -> int:
     return int(result)
 
 def trigger_trap(game_state):
-    print('Ловушка активирована! Пол стал дрожать...')
+    print('\nЛовушка активирована! Пол стал дрожать...')
     
     if game_state.get('player_inventory'):
         # Если у игрока есть предметы в инвенторе
@@ -198,7 +202,7 @@ def trigger_trap(game_state):
     else:
         # Игрок получает урон
         print('Ты получаешь урон!')
-        if pseudo_random(45, 9) < 3:
+        if pseudo_random(seed, MODULO_DAMAGE) < 3:
             print('Вы самое слабое звено, прощайте!')
             game_state['game_over'] = True
         else:
@@ -206,11 +210,11 @@ def trigger_trap(game_state):
 
 def random_event(game_state):
     current_room = game_state['current_room']
-
+    seed = game_state['steps_taken']
     # Определяем произойдет ли событие
-    if pseudo_random(35, 10) == 0:
+    if pseudo_random(seed, MODULO_EVENT) == 0:
         # какое именно событие случится
-        event_type = pseudo_random(15, 3)
+        event_type = pseudo_random(seed, MODULO_EVENT_TYPE)
         match event_type:
             # Сценарий 1 (Находка)
             case 0:

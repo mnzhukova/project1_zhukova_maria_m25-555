@@ -77,3 +77,7 @@ COMMANDS = {
     'quit/exit': 'выйти из игры',
     'help': 'показать это сообщение'
 }
+
+MODULO_DAMAGE = 10
+MODULO_EVENT = 10
+MODULO_EVENT_TYPE = 3
