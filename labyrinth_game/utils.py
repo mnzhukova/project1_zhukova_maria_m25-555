@@ -1,11 +1,13 @@
 # Модуль utils - вспомогательные функции
 import math
 
-from .constants import (MODULO_DAMAGE, 
-                        MODULO_EVENT, 
-                        MODULO_EVENT_TYPE, 
-                        ROOMS, 
-                        VALID_ANSWERS)
+from .constants import (
+    MODULO_DAMAGE,
+    MODULO_EVENT,
+    MODULO_EVENT_TYPE,
+    ROOMS,
+    VALID_ANSWERS,
+)
 
 
 def describe_current_room(game_state):
