@@ -53,6 +53,15 @@ def describe_current_room(game_state):
         print('\nКажется, здесь есть загадка (используйте команду solve).\n')
 
 def happy_end(game_state):
+    '''
+    Выигрышное завершение игры
+
+    Args:
+        game_state(dict): Словарь с состоянием игры.
+
+    Returns:
+        None: Выводит информацию в консоль, не возвращая значения.
+    '''
     current_room = game_state['current_room']
     # Удаляем 'treasure_chest' из комнаты
     ROOMS[current_room]['items'].remove('treasure_chest')
@@ -64,21 +73,22 @@ def happy_end(game_state):
 
 def solve_puzzle(game_state):
     '''
-    Позволяет игроку решить загадку в текущей комнате.
+    Позволяет игроку решить загадку в текущей комнате. Выдает награду
+    в зависимости от комнаты, где была решена загадка
 
     Args:
         game_state (dict): Словарь с состоянием игры.
 
     Returns:
         bool:
-            - True: если загадка решена или её не было в комнате.
-            - False: если ответ неверный.
+            - Всегда возвращает True после выполнения 
     '''
     current_room = game_state['current_room']
 
     # Проверяем наличие загадки в комнате
     if not ROOMS[current_room].get('puzzle') :
         print('Загадок здесь нет.')
+        return True
 
     question, correct_answer = ROOMS[current_room]['puzzle']
     # Вывод загадки
@@ -143,6 +153,19 @@ def solve_puzzle(game_state):
         return True
 
 def attempt_open_treasure(game_state):
+    '''
+    Пытается открыть сундук в комнате сокровищ, используя ключ или решая загадку.
+
+    Функция реализует два сценария открытия сундука:
+    1. При наличии 'treasure_key' в инвентаре — мгновенное открытие и завершение игры.
+    2. При отсутствии ключа — диалог с игроком и возможность решить загадку.
+
+    Args:
+        game_state (dict): Словарь с состоянием игры.
+
+    Returns:
+        bool: Всегда возвращает True после выполнения 
+    '''
 
     # Проверяем есть ли у игрока 'treasure_key'
     if 'treasure_key' in game_state['player_inventory']:
@@ -167,6 +190,17 @@ def attempt_open_treasure(game_state):
     return True
 
 def show_help(commands):
+    '''
+    Отображает список доступных команд и их описаний в структурированном виде.
+
+    Arg:
+        commands (dict): Словарь, где:
+            - ключ (str) — название команды;
+            - значение (str) — краткое описание команды.
+
+    Returns:
+        None: функция не возвращает значение, только производит вывод.
+    '''
     print("\nДоступные команды:")
     for command, description in commands.items():
         print(f'{command:<16}-{description}')
@@ -191,6 +225,19 @@ def pseudo_random(seed: int, modulo: int) -> int:
     return int(result)
 
 def trigger_trap(game_state):
+    '''
+    Активирует ловушку в комнате, приводя к негативным последствиям для игрока.
+    
+    Функция моделирует срабатывание ловушки с двумя возможными сценариями:
+    1. Если у игрока есть предметы в инвентаре — случайно удаляется один из них.
+    2. Если инвентарь пуст — игрок получает урон с вероятностью фатального исхода.
+
+    Args:
+        game_state (dict): Словарь с состоянием игры.
+
+    Returns:
+        None: функция не возвращает значение, только производит побочные эффекты.
+    '''
     print('\nЛовушка активирована! Пол стал дрожать...')
     
     if game_state.get('player_inventory'):
@@ -211,8 +258,22 @@ def trigger_trap(game_state):
             print('Но тебе повезло, ты уцелел')
 
 def random_event(game_state):
+    '''
+    Генерирует случайное событие в текущей комнате.
+
+    Функция определяет, произойдёт ли событие, и если да — случайно выбирает один 
+    из возможных сценариев. 
+
+    Args:
+        game_state (dict): Словарь с состоянием игры.
+
+    Returns:
+        None: функция не возвращает значение, только производит эффекты.
+
+    '''
     current_room = game_state['current_room']
     seed = game_state['steps_taken']
+
     # Определяем произойдет ли событие
     if pseudo_random(seed, MODULO_EVENT) == 0:
         # какое именно событие случится
