@@ -108,7 +108,7 @@ def solve_puzzle(game_state):
         if current_room == 'trap_room':
             trigger_trap(game_state)
         print('Неверно. Попробуйте снова.\n' 
-              'Введи exit для выхода из режима решения загадки'
+              'Или введи exit для выхода из режима решения загадки'
         )
         user_answer = input('Ваш ответ: >> ').strip().lower()
         
@@ -281,7 +281,10 @@ def random_event(game_state):
         match event_type:
             # Сценарий 1 (Находка)
             case 0:
-                print('Вот это удача! Ты нашел монетку! Если хочешь, то возьми её')
+                print(
+                    'Вот это удача! Ты нашел монетку(coin)! ' 
+                    'Если хочешь, то возьми её'
+                )
                 ROOMS[current_room]['items'].append('coin')
 
             # Сценарий 2 (Испуг)

@@ -8,7 +8,7 @@
 - инвентарь;  
 - загадки с вариативными ответами;  
 - ловушки;
-- случайные события
+- случайные события.
 
 ## Установка
 
@@ -27,32 +27,26 @@ make (проверьте: make --version).
 
 2. Клонируйте репозиторий:
 
-git clone https://github.com/<ваш-пользователь>/project1_zhukova_maria_m25-555.git
+git clone https://github.com/mnzhukova/project1_zhukova_maria_m25-555
+
 cd project1_zhukova_maria_m25-555
 
-3. Настройка окружения
+3. Выполнить poetry install
+
+4. Настройка окружения
 
     1. Активируйте виртуальное окружение через Poetry:
 
-    poetry env use python3
-    poetry install
+    poetry env activate
+    
+    2. После этого у вас в терминале появится что то похожее (только с вашими данными, ниже это пример!):
+
+    source /home/ilyam/testpython/.venv/bin/activate
+  
+    Скопируйте и вставьте себе в терминал, после чего запустите. В результате виртуальное окружение будет запущено.
     Это создаст .venv и установит все зависимости из pyproject.toml.
 
-    2. Активируйте окружение (если не активировалось автоматически):
-
-    source $(poetry env info --path)/bin/activate
-
-4. Сборка пакета (опционально, для публикации)
-
-make build
-Выполняет poetry build → создаёт дистрибутивы в папке dist/.
-
-5. Установка пакета в систему
-make package-install
-Выполняет python3 -m pip install dist/*.whl → устанавливает пакет локально.
-После этого команда project станет доступна в терминале.
-
-6. Запуск игры
+5. Запуск игры
 
 Через Poetry
 poetry run project
@@ -80,15 +74,7 @@ quit/exit — выйти.
 
 ## Демонстрация игрового процесса
 
-<p align=“center”>
-<a href=“<ваш-id>” target=“_blank”>
-<img src=“<ваш-id>.svg” alt=“Демонстрация игры”>
-</a>
-</p>
-
-Как посмотреть:
-Кликните на изображение выше.
-Или перейдите по ссылке: <ваш-id>
+[![asciicast](https://asciinema.org/a/5ueb03MzEJQnapfr5xXentcKI.svg)](https://asciinema.org/a/5ueb03MzEJQnapfr5xXentcKI)
 
 ## Структура проекта
 
