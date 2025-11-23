@@ -75,18 +75,3 @@ quit/exit — выйти.
 ## Демонстрация игрового процесса
 
 [![asciicast](https://asciinema.org/a/5ueb03MzEJQnapfr5xXentcKI.svg)](https://asciinema.org/a/5ueb03MzEJQnapfr5xXentcKI)
-
-## Структура проекта
-
-project1_zhukova_maria_m25-555/
-├──labyrinth_game/
-    ├── __init__.py
-    ├── constants.py         # константы (команды, комнаты, константы для случайных событий)
-    ├── player_actions.py    # функции, напрямую изменяющие состояние игрока (game_state).
-    ├── utils.py             # вспомогательные функции (описание комнат, загадки, случайные события).
-    └── main.py              # точка входа, игровой цикл и обработка команд.
-├── Makefile
-├── poetry.lock
-├── pyproject.toml
-├── README.md
-└── .gitignore 
