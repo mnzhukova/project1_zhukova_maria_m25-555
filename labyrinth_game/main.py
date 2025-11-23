@@ -108,7 +108,7 @@ def process_command(game_state, command):
         case _:
             print('Эхо лабиринта не узнаёт этого слова. Попроси помощи '
                   '— введи help.')
-
+# отслеживает состояние игры
 game_state = {
         'player_inventory': [], # Инвентарь игрока
         'current_room': 'entrance', # Текущая комната
